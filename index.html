@@ -1,0 +1,445 @@
+<title>NWGYFL 2026 Schedule Candidates</title>
+<style>
+/* Single committed dark theme (director preference): every color painted
+   explicitly so the page holds on any host ground, light or dark.
+   Deliberately achromatic (director 2026-08-12: "neutral, not green"). The
+   home-game shading is a lighter grey step rather than a hue, so it reads as
+   emphasis on any monitor and survives a black-and-white print. */
+:root{
+  --accent:#c9ced6; --paper:#15171a; --ink:#e8eaed;
+  --line:#3a3f46; --dim:#99a0a8; --home:#2c3138; --band:#101216;
+  --bandink:#e8eaed; --card:#1d2025;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font:14px/1.45 "Segoe UI",system-ui,sans-serif}
+header{background:var(--band);color:var(--bandink);padding:14px 18px 12px;
+  display:flex;flex-wrap:wrap;gap:10px 22px;align-items:baseline}
+header h1{margin:0;font-size:17px;font-weight:600;letter-spacing:.02em}
+/* the note sits centred under the title, and is a promise the org list has to
+   keep: the payload sorts case-insensitively so Marietta comes before MDA */
+.titleblock{display:flex;flex-direction:column;align-items:center}
+.subnote{font-size:10.5px;color:var(--dim);margin-top:1px;letter-spacing:.02em}
+/* the paper key: meaningless on screen, where colour does the work */
+.printkey{display:none;font-size:10px;color:#333;margin-top:3px;letter-spacing:.01em}
+.printkey .k-x{border-left:3px solid #111;padding-left:4px}
+.printkey .k-n{outline:1.5px dashed #111;outline-offset:1px;padding:0 3px}
+header h1 b{color:var(--accent);font-weight:700}
+.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:12.5px}
+.seg{display:inline-flex;border:1px solid var(--accent);border-radius:5px;overflow:hidden}
+.seg button{border:0;background:transparent;color:var(--bandink);padding:4px 11px;
+  cursor:pointer;font:inherit}
+.seg button.on{background:var(--accent);color:#15171a;font-weight:700}
+select,.printbtn{font:inherit;padding:4px 8px;border:1px solid var(--line);
+  border-radius:5px;background:var(--card);color:var(--ink);cursor:pointer}
+main{padding:14px 18px 4px}
+.scroll{overflow-x:auto;border:1px solid var(--line);border-radius:6px;background:var(--card)}
+table{border-collapse:collapse;font-variant-numeric:tabular-nums;width:100%}
+th,td{border-bottom:1px solid var(--line);padding:3px 7px;text-align:left;
+  white-space:nowrap;font-size:12.5px}
+thead th{position:sticky;top:0;background:var(--band);color:var(--bandink);
+  font-size:11px;text-transform:uppercase;letter-spacing:.06em;z-index:2}
+thead th small{display:block;font-weight:400;opacity:.75;letter-spacing:0;text-transform:none}
+td.team{position:sticky;left:0;background:var(--card);font-weight:600;z-index:1;
+  border-right:1px solid var(--line)}
+tr.orgband td{background:var(--band);color:var(--bandink);font-weight:700;
+  font-size:11.5px;text-transform:uppercase;letter-spacing:.07em;padding:4px 8px;
+  position:sticky;left:0}
+td.h{background:var(--home);font-weight:600}
+/* crossover game against a GMYFL team: the same yellow the
+   availability workbook uses, muted for the dark page */
+td.xg{background:#3a3420}
+td.xg.h{background:#4a4326;font-weight:600}
+/* neutral site: neither team's park. Cool where the crossover is warm, so a
+   reader never has to decide which yellow-ish cell they are looking at. The
+   home shading still applies underneath, because the bylaws still count it as
+   that team's home game; the colour only says where it is played. */
+td.nu{background:#1e2f3d}
+td.nu.h{background:#27394d;font-weight:600}
+td.b{color:var(--dim);font-style:italic}
+td .t{color:var(--dim);font-weight:400;font-size:11px;margin-left:4px}
+td .hc{color:var(--accent)}
+.hint{color:var(--dim);font-size:11.5px;margin:8px 2px}
+.weekgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:10px}
+.wk h2{font-size:13px;text-transform:uppercase;letter-spacing:.07em;margin:18px 2px 8px;
+  color:var(--ink)}
+.wk h2 span{color:var(--dim);font-weight:400;margin-left:6px;letter-spacing:0;
+  text-transform:none}
+.park{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:8px 10px}
+.park h3{margin:0 0 5px;font-size:12.5px;color:var(--ink);
+  border-bottom:2px solid var(--accent);padding-bottom:3px;display:flex;
+  flex-wrap:wrap;gap:2px 8px;justify-content:space-between}
+.park h3 em{font-style:normal;color:var(--dim);font-weight:400;font-size:11px;
+  text-align:right}
+.park div{font-size:12px;padding:1.5px 0;font-variant-numeric:tabular-nums}
+.park .tm{color:var(--dim)}
+.park b{font-weight:600}
+.park .dv{display:inline-block;width:56px;color:var(--dim);font-size:10.5px;
+  text-transform:uppercase;letter-spacing:.04em}
+/* kickoffs keep their lowercase a/p markers, so the row reads the same way
+   the long-day note on the heading does */
+.park .kt{text-transform:none}
+.byeline{margin-top:8px;font-size:11.5px;color:var(--dim)}
+.vs{max-width:1000px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+  gap:10px;margin:8px 0 16px}
+.cardstat{background:var(--card);border:1px solid var(--line);border-radius:6px;
+  padding:9px 12px}
+.cardstat b{display:block;font-size:19px;color:var(--accent);
+  font-variant-numeric:tabular-nums}
+.cardstat span{font-size:10.5px;color:var(--dim);text-transform:uppercase;
+  letter-spacing:.05em}
+.cardstat small{display:block;font-size:11px;color:var(--dim);margin-top:1px}
+.faq dt{font-weight:600;margin-top:10px}
+.faq dd{margin:2px 0 8px;font-size:12.5px}
+.vs table{margin-bottom:14px}
+.vs th,.vs td{white-space:normal;vertical-align:top;font-size:12.5px;padding:6px 9px}
+.vs td:first-child{font-weight:600;width:15%}
+.vs td:nth-child(2){width:42%}
+.vs h2{font-size:13px;text-transform:uppercase;letter-spacing:.07em;margin:16px 2px 8px}
+.vs p.prov{color:var(--dim);font-size:11.5px;margin:6px 2px 12px}
+.vs ul{margin:4px 0 12px;padding-left:20px;font-size:12.5px}
+.vs li{margin:3px 0}
+footer{margin:16px 18px 22px;font-size:12px;color:var(--dim);border-top:1px solid var(--line);
+  padding-top:10px}
+footer b{color:var(--ink)}
+@media print{
+  /* The screen palette is committed dark, which paper is not. Repainting only
+     the body left the table container, the sticky header row and the org bands
+     dark, so a printed page came out either toner-heavy or, with background
+     graphics off, white text on white paper. Every surface that carries a dark
+     colour on screen is restated here, and the tokens are redefined at the root
+     so anything keyed to them follows without being listed twice. */
+  :root{
+    --paper:#fff; --ink:#111; --line:#bbb; --dim:#555; --home:#e9e9e9;
+    --band:#e4e4e4; --bandink:#111; --card:#fff; --accent:#444;
+  }
+  header .controls,.hint{display:none}
+  body{background:#fff;color:#111}
+  header{background:#fff;color:#111;border-bottom:2px solid #111;padding-bottom:6px}
+  header h1 b{color:#111}
+  .subnote{color:#444}
+  .scroll{border:0;overflow:visible;background:#fff}
+  table{width:100%}
+  th,td{border-bottom:1px solid #ccc}
+  thead th{position:static;background:#e4e4e4;color:#111;border-bottom:1px solid #999}
+  td.team{position:static;background:#fff;border-right:1px solid #999}
+  tr.orgband td{background:#e4e4e4;color:#111}
+  .park{background:#fff;border:1px solid #999}
+  .park h3{color:#111;border-bottom:2px solid #111}
+  .park h3 em,.park .tm,.park .dv,.byeline{color:#444}
+  .cardstat{background:#fff;border:1px solid #999}
+  .cardstat b{color:#111}
+  .cardstat span,.cardstat small{color:#444}
+  .wk h2,.vs h2,.faq dt{color:#111}
+  .vs p.prov{color:#444}
+  footer{color:#444;border-top:1px solid #999}
+  footer b{color:#111}
+  /* BLACK AND WHITE FIRST. On screen three things are told apart by hue: a
+     home cell, a crossover game against the other league, and a neutral site.
+     Desaturated they land within a few percent of each other, so on paper each
+     one gets a signal that survives a mono printer AND a printer that drops
+     background graphics: home is the only fill, crossover carries a solid left
+     rule, and a neutral site is outlined and marked. print-color-adjust keeps
+     the greys when the browser would otherwise discard them. */
+  html,body{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  td.h{background:#dcdcdc;color:#111;font-weight:700}
+  td.xg{background:#f4f4f4;color:#111;border-left:3px solid #111}
+  td.xg.h{background:#dcdcdc;border-left:3px solid #111;font-weight:700}
+  td.nu{background:#fff;color:#111;outline:1.5px dashed #111;outline-offset:-3px}
+  td.nu.h{background:#dcdcdc;font-weight:700}
+  td .hc{color:#111}
+  td .t,td.b{color:#444}
+  /* the shading means nothing without a key, and the screen hint is hidden */
+  .printkey{display:block !important}
+  /* keep an age group or a park card from being split down the middle */
+  .park,.wk{break-inside:avoid}
+  tr{break-inside:avoid}
+}
+</style>
+<header>
+  <div class="titleblock">
+    <h1>NWGYFL 2026 <b id="candname"></b></h1>
+    <div class="subnote">(In Alphabetical Order)</div>
+    <div class="printkey">Shaded = home game &middot; <span class="k-x">bar</span> = game
+      against the other league &middot; <span class="k-n">dashed</span> = played at a
+      neutral park &middot; times are kickoffs, one field per park</div>
+  </div>
+  <div class="controls">
+    <span class="seg" id="candseg"></span>
+    <span class="seg" id="viewseg">
+      <button data-v="org" class="on">By org</button><button data-v="age">By age</button><button data-v="week">By week</button><button data-v="info" id="infobtn">Info</button>
+    </span>
+    <select id="orgpick"><option value="">All orgs</option></select>
+    <button class="printbtn" id="printbtn" onclick="print()" hidden>Print</button>
+  </div>
+</header>
+<main><div id="view"></div></main>
+<footer id="foot"></footer>
+<script>
+const D={"weeks":["8/29","9/12","9/19","9/26","10/3","10/10","10/17","10/24","10/31"],"divisions":["5U","6U","7U","8U","9U","10U","11U","12U"],"orgs":[{"key":"DTC","name":"Douglasville Tiger Cubs","teams":[{"id":"DTC 5U","label":"5U"},{"id":"DTC 6U","label":"6U"},{"id":"DTC 7U","label":"7U"},{"id":"DTC 8U","label":"8U"},{"id":"DTC 9U","label":"9U"},{"id":"DTC 10U Blue","label":"10U Blue"},{"id":"DTC 10U Gold","label":"10U Gold"},{"id":"DTC 11U","label":"11U"},{"id":"DTC 12U","label":"12U"}]},{"key":"ESR","name":"East Side Ravens","teams":[{"id":"ESR 6U","label":"6U"},{"id":"ESR 7U","label":"7U"},{"id":"ESR 8U","label":"8U"},{"id":"ESR 9U","label":"9U"},{"id":"ESR 10U","label":"10U"},{"id":"ESR 12U","label":"12U"}]},{"key":"BUCK","name":"Georgia Buckeyes","teams":[{"id":"BUCK 5U","label":"5U"},{"id":"BUCK 6U","label":"6U"},{"id":"BUCK 7U","label":"7U"},{"id":"BUCK 8U","label":"8U"},{"id":"BUCK 9U","label":"9U"},{"id":"BUCK 10U","label":"10U"},{"id":"BUCK 11U","label":"11U"}]},{"key":"FORCE","name":"Georgia Force","teams":[{"id":"FORCE 9U","label":"9U"},{"id":"FORCE 10U","label":"10U"},{"id":"FORCE 11U","label":"11U"}]},{"key":"LITH","name":"Lithonia Lions","teams":[{"id":"LITH 5U","label":"5U"},{"id":"LITH 6U","label":"6U"},{"id":"LITH 9U","label":"9U"},{"id":"LITH 10U","label":"10U"}]},{"key":"MARI","name":"Marietta Cardinals","teams":[{"id":"MARI 6U","label":"6U"},{"id":"MARI 9U","label":"9U"},{"id":"MARI 10U","label":"10U"},{"id":"MARI 12U","label":"12U"}]},{"key":"MDA","name":"MDA Force","teams":[{"id":"MDA 8U","label":"8U"},{"id":"MDA 9U","label":"9U"}]},{"key":"SAND","name":"Sandtown Lions","teams":[{"id":"SAND 6U","label":"6U"},{"id":"SAND 7U","label":"7U"},{"id":"SAND 8U","label":"8U"},{"id":"SAND 9U Blue","label":"9U Blue"},{"id":"SAND 9U Silver","label":"9U Silver"},{"id":"SAND 10U","label":"10U"}]},{"key":"SMYR","name":"Smyrna Spartans","teams":[{"id":"SMYR 5U","label":"5U"},{"id":"SMYR 6U","label":"6U"},{"id":"SMYR 7U","label":"7U"},{"id":"SMYR 8U","label":"8U"},{"id":"SMYR 9U","label":"9U"},{"id":"SMYR 10U","label":"10U"}]},{"key":"SWC","name":"Southwest Cardinals","teams":[{"id":"SWC 5U","label":"5U"},{"id":"SWC 6U","label":"6U"},{"id":"SWC 7U","label":"7U"},{"id":"SWC 8U","label":"8U"}]},{"key":"TUCK","name":"Tucker Lions","teams":[{"id":"TUCK 5U","label":"5U"},{"id":"TUCK 8U","label":"8U"},{"id":"TUCK 9U","label":"9U"},{"id":"TUCK 10U","label":"10U"},{"id":"TUCK 11U","label":"11U"},{"id":"TUCK 12U","label":"12U"}]},{"key":"WALL","name":"Wallace Park Falcons","teams":[{"id":"WALL 5U","label":"5U"},{"id":"WALL 8U","label":"8U"},{"id":"WALL 9U","label":"9U"},{"id":"WALL 10U","label":"10U"}]}],"candidates":[{"label":"Proposal","games":[{"w":0,"time":"09:00","t12":"9:00a","div":"6U","home":"DTC 6U","away":"SMYR 6U","host":"DTC"},{"w":0,"time":"10:30","t12":"10:30a","div":"7U","home":"DTC 7U","away":"SMYR 7U","host":"DTC"},{"w":0,"time":"12:30","t12":"12:30p","div":"8U","home":"DTC 8U","away":"SAND 8U","host":"DTC"},{"w":0,"time":"14:30","t12":"2:30p","div":"9U","home":"DTC 9U","away":"SAND 9U Silver","host":"DTC"},{"w":0,"time":"16:30","t12":"4:30p","div":"10U","home":"DTC 10U Blue","away":"SAND 10U","host":"DTC"},{"w":0,"time":"09:00","t12":"9:00a","div":"6U","home":"ESR 6U","away":"BUCK 6U","host":"ESR"},{"w":0,"time":"10:30","t12":"10:30a","div":"7U","home":"ESR 7U","away":"BUCK 7U","host":"ESR"},{"w":0,"time":"12:30","t12":"12:30p","div":"8U","home":"ESR 8U","away":"SMYR 8U","host":"ESR"},{"w":0,"time":"14:30","t12":"2:30p","div":"9U","home":"ESR 9U","away":"BUCK 9U","host":"ESR"},{"w":0,"time":"16:30","t12":"4:30p","div":"10U","home":"ESR 10U","away":"DTC 10U Gold","host":"ESR"},{"w":0,"time":"10:00","t12":"10:00a","div":"9U","home":"FORCE 9U","away":"TUCK 9U","host":"FORCE"},{"w":0,"time":"12:00","t12":"12:00p","div":"10U","home":"FORCE 10U","away":"TUCK 10U","host":"FORCE"},{"w":0,"time":"09:00","t12":"9:00a","div":"5U","home":"LITH 5U","away":"BUCK 5U","host":"LITH"},{"w":0,"time":"10:30","t12":"10:30a","div":"6U","home":"LITH 6U","away":"SAND 6U","host":"LITH"},{"w":0,"time":"12:00","t12":"12:00p","div":"9U","home":"LITH 9U","away":"SAND 9U Blue","host":"LITH"},{"w":0,"time":"14:00","t12":"2:00p","div":"10U","home":"LITH 10U","away":"SMYR 10U","host":"LITH"},{"w":0,"time":"09:00","t12":"9:00a","div":"5U","home":"SWC 5U","away":"WALL 5U","host":"SWC"},{"w":0,"time":"10:30","t12":"10:30a","div":"6U","home":"SWC 6U","away":"MARI 6U","host":"SWC"},{"w":0,"time":"12:00","t12":"12:00p","div":"8U","home":"SWC 8U","away":"TUCK 8U","host":"SWC"},{"w":0,"time":"10:00","t12":"10:00a","div":"8U","home":"WALL 8U","away":"BUCK 8U","host":"WALL"},{"w":0,"time":"12:00","t12":"12:00p","div":"9U","home":"WALL 9U","away":"MARI 9U","host":"WALL"},{"w":0,"time":"14:00","t12":"2:00p","div":"10U","home":"WALL 10U","away":"MARI 10U","host":"WALL"},{"w":1,"time":"09:00","t12":"9:00a","div":"7U","home":"DTC 7U","away":"ESR 7U","host":"DTC"},{"w":1,"time":"11:00","t12":"11:00a","div":"8U","home":"DTC 8U","away":"ESR 8U","host":"DTC"},{"w":1,"time":"13:00","t12":"1:00p","div":"9U","home":"DTC 9U","away":"MARI 9U","host":"DTC"},{"w":1,"time":"15:00","t12":"3:00p","div":"10U","home":"DTC 10U Blue","away":"ESR 10U","host":"DTC"},{"w":1,"time":"08:00","t12":"8:00a","div":"5U","home":"BUCK 5U","away":"TUCK 5U","host":"BUCK"},{"w":1,"time":"09:30","t12":"9:30a","div":"6U","home":"BUCK 6U","away":"SAND 6U","host":"BUCK"},{"w":1,"time":"11:00","t12":"11:00a","div":"7U","home":"BUCK 7U","away":"SAND 7U","host":"BUCK"},{"w":1,"time":"13:00","t12":"1:00p","div":"8U","home":"BUCK 8U","away":"SAND 8U","host":"BUCK"},{"w":1,"time":"15:00","t12":"3:00p","div":"9U","home":"BUCK 9U","away":"SAND 9U Blue","host":"BUCK"},{"w":1,"time":"17:00","t12":"5:00p","div":"10U","home":"BUCK 10U","away":"TUCK 10U","host":"BUCK"},{"w":1,"time":"10:00","t12":"10:00a","div":"9U","home":"FORCE 9U","away":"MDA 9U","host":"FORCE"},{"w":1,"time":"12:00","t12":"12:00p","div":"10U","home":"FORCE 10U","away":"MARI 10U","host":"FORCE"},{"w":1,"time":"09:00","t12":"9:00a","div":"5U","home":"LITH 5U","away":"SMYR 5U","host":"LITH"},{"w":1,"time":"10:30","t12":"10:30a","div":"6U","home":"LITH 6U","away":"ESR 6U","host":"LITH"},{"w":1,"time":"12:00","t12":"12:00p","div":"9U","home":"LITH 9U","away":"SAND 9U Silver","host":"LITH"},{"w":1,"time":"14:00","t12":"2:00p","div":"10U","home":"LITH 10U","away":"SAND 10U","host":"LITH"},{"w":1,"time":"09:00","t12":"9:00a","div":"6U","home":"SWC 6U","away":"SMYR 6U","host":"SWC"},{"w":1,"time":"10:30","t12":"10:30a","div":"7U","home":"SWC 7U","away":"SMYR 7U","host":"SWC"},{"w":1,"time":"12:30","t12":"12:30p","div":"8U","home":"SWC 8U","away":"SMYR 8U","host":"SWC"},{"w":1,"time":"10:00","t12":"10:00a","div":"5U","home":"WALL 5U","away":"DTC 5U","host":"WALL"},{"w":1,"time":"11:30","t12":"11:30a","div":"8U","home":"WALL 8U","away":"MDA 8U","host":"WALL"},{"w":1,"time":"13:30","t12":"1:30p","div":"9U","home":"WALL 9U","away":"SMYR 9U","host":"WALL"},{"w":1,"time":"15:30","t12":"3:30p","div":"10U","home":"WALL 10U","away":"SMYR 10U","host":"WALL"},{"w":2,"time":"09:00","t12":"9:00a","div":"5U","home":"DTC 5U","away":"BUCK 5U","host":"DTC"},{"w":2,"time":"10:30","t12":"10:30a","div":"6U","home":"DTC 6U","away":"LITH 6U","host":"DTC"},{"w":2,"time":"12:00","t12":"12:00p","div":"9U","home":"DTC 9U","away":"FORCE 9U","host":"DTC"},{"w":2,"time":"09:00","t12":"9:00a","div":"6U","home":"ESR 6U","away":"SWC 6U","host":"ESR"},{"w":2,"time":"10:30","t12":"10:30a","div":"7U","home":"ESR 7U","away":"SWC 7U","host":"ESR"},{"w":2,"time":"12:30","t12":"12:30p","div":"8U","home":"ESR 8U","away":"BUCK 8U","host":"ESR"},{"w":2,"time":"14:30","t12":"2:30p","div":"9U","home":"ESR 9U","away":"SAND 9U Blue","host":"ESR"},{"w":2,"time":"16:30","t12":"4:30p","div":"10U","home":"ESR 10U","away":"BUCK 10U","host":"ESR"},{"w":2,"time":"09:00","t12":"9:00a","div":"6U","home":"MARI 6U","away":"BUCK 6U","host":"MARI"},{"w":2,"time":"10:30","t12":"10:30a","div":"9U","home":"MARI 9U","away":"BUCK 9U","host":"MARI"},{"w":2,"time":"12:30","t12":"12:30p","div":"10U","home":"MARI 10U","away":"DTC 10U Gold","host":"MARI"},{"w":2,"time":"09:00","t12":"9:00a","div":"5U","home":"SMYR 5U","away":"SWC 5U","host":"SMYR"},{"w":2,"time":"10:30","t12":"10:30a","div":"6U","home":"SMYR 6U","away":"SAND 6U","host":"SMYR"},{"w":2,"time":"12:00","t12":"12:00p","div":"7U","home":"SMYR 7U","away":"SAND 7U","host":"SMYR"},{"w":2,"time":"14:00","t12":"2:00p","div":"8U","home":"SMYR 8U","away":"SAND 8U","host":"SMYR"},{"w":2,"time":"16:00","t12":"4:00p","div":"9U","home":"SMYR 9U","away":"SAND 9U Silver","host":"SMYR"},{"w":2,"time":"18:00","t12":"6:00p","div":"10U","home":"SMYR 10U","away":"FORCE 10U","host":"SMYR"},{"w":2,"time":"10:00","t12":"10:00a","div":"8U","home":"TUCK 8U","away":"MDA 8U","host":"TUCK"},{"w":2,"time":"12:00","t12":"12:00p","div":"9U","home":"TUCK 9U","away":"MDA 9U","host":"TUCK"},{"w":2,"time":"14:00","t12":"2:00p","div":"10U","home":"TUCK 10U","away":"DTC 10U Blue","host":"TUCK"},{"w":2,"time":"10:00","t12":"10:00a","div":"5U","home":"WALL 5U","away":"LITH 5U","host":"WALL"},{"w":2,"time":"11:30","t12":"11:30a","div":"8U","home":"WALL 8U","away":"SWC 8U","host":"WALL"},{"w":2,"time":"13:30","t12":"1:30p","div":"9U","home":"WALL 9U","away":"LITH 9U","host":"WALL"},{"w":2,"time":"15:30","t12":"3:30p","div":"10U","home":"WALL 10U","away":"LITH 10U","host":"WALL"},{"w":3,"time":"10:30","t12":"10:30a","div":"7U","home":"DTC 7U","away":"SWC 7U","host":"DTC"},{"w":3,"time":"12:30","t12":"12:30p","div":"8U","home":"DTC 8U","away":"MDA 8U","host":"DTC"},{"w":3,"time":"14:30","t12":"2:30p","div":"10U","home":"DTC 10U Gold","away":"LITH 10U","host":"DTC"},{"w":3,"time":"10:00","t12":"10:00a","div":"9U","home":"FORCE 9U","away":"WALL 9U","host":"FORCE"},{"w":3,"time":"12:00","t12":"12:00p","div":"10U","home":"FORCE 10U","away":"WALL 10U","host":"FORCE"},{"w":3,"time":"09:00","t12":"9:00a","div":"6U","home":"MARI 6U","away":"ESR 6U","host":"MARI"},{"w":3,"time":"10:30","t12":"10:30a","div":"9U","home":"MARI 9U","away":"LITH 9U","host":"MARI"},{"w":3,"time":"12:30","t12":"12:30p","div":"10U","home":"MARI 10U","away":"DTC 10U Blue","host":"MARI"},{"w":3,"time":"09:00","t12":"9:00a","div":"6U","home":"SAND 6U","away":"DTC 6U","host":"SAND"},{"w":3,"time":"10:30","t12":"10:30a","div":"7U","home":"SAND 7U","away":"ESR 7U","host":"SAND"},{"w":3,"time":"12:30","t12":"12:30p","div":"8U","home":"SAND 8U","away":"ESR 8U","host":"SAND"},{"w":3,"time":"14:30","t12":"2:30p","div":"9U","home":"SAND 9U Blue","away":"DTC 9U","host":"SAND"},{"w":3,"time":"16:30","t12":"4:30p","div":"9U","home":"SAND 9U Silver","away":"ESR 9U","host":"SAND"},{"w":3,"time":"18:30","t12":"6:30p","div":"10U","home":"SAND 10U","away":"ESR 10U","host":"SAND"},{"w":3,"time":"09:00","t12":"9:00a","div":"5U","home":"SMYR 5U","away":"BUCK 5U","host":"SMYR"},{"w":3,"time":"10:30","t12":"10:30a","div":"6U","home":"SMYR 6U","away":"BUCK 6U","host":"SMYR"},{"w":3,"time":"12:00","t12":"12:00p","div":"7U","home":"SMYR 7U","away":"BUCK 7U","host":"SMYR"},{"w":3,"time":"14:00","t12":"2:00p","div":"8U","home":"SMYR 8U","away":"WALL 8U","host":"SMYR"},{"w":3,"time":"16:00","t12":"4:00p","div":"9U","home":"SMYR 9U","away":"MDA 9U","host":"SMYR"},{"w":3,"time":"18:00","t12":"6:00p","div":"10U","home":"SMYR 10U","away":"BUCK 10U","host":"SMYR"},{"w":3,"time":"10:00","t12":"10:00a","div":"5U","home":"TUCK 5U","away":"SWC 5U","host":"TUCK"},{"w":3,"time":"11:30","t12":"11:30a","div":"8U","home":"TUCK 8U","away":"BUCK 8U","host":"TUCK"},{"w":3,"time":"13:30","t12":"1:30p","div":"9U","home":"TUCK 9U","away":"BUCK 9U","host":"TUCK"},{"w":4,"time":"09:00","t12":"9:00a","div":"8U","home":"DTC 8U","away":"TUCK 8U","host":"DTC"},{"w":4,"time":"11:00","t12":"11:00a","div":"9U","home":"DTC 9U","away":"TUCK 9U","host":"DTC"},{"w":4,"time":"13:00","t12":"1:00p","div":"10U","home":"DTC 10U Gold","away":"TUCK 10U","host":"DTC"},{"w":4,"time":"09:00","t12":"9:00a","div":"6U","home":"ESR 6U","away":"SMYR 6U","host":"ESR"},{"w":4,"time":"10:30","t12":"10:30a","div":"7U","home":"ESR 7U","away":"SMYR 7U","host":"ESR"},{"w":4,"time":"12:30","t12":"12:30p","div":"8U","home":"ESR 8U","away":"WALL 8U","host":"ESR"},{"w":4,"time":"14:30","t12":"2:30p","div":"9U","home":"ESR 9U","away":"MDA 9U","host":"ESR"},{"w":4,"time":"16:30","t12":"4:30p","div":"10U","home":"ESR 10U","away":"WALL 10U","host":"ESR"},{"w":4,"time":"08:00","t12":"8:00a","div":"5U","home":"BUCK 5U","away":"WALL 5U","host":"BUCK"},{"w":4,"time":"09:30","t12":"9:30a","div":"6U","home":"BUCK 6U","away":"DTC 6U","host":"BUCK"},{"w":4,"time":"11:00","t12":"11:00a","div":"7U","home":"BUCK 7U","away":"DTC 7U","host":"BUCK"},{"w":4,"time":"13:00","t12":"1:00p","div":"8U","home":"BUCK 8U","away":"MDA 8U","host":"BUCK"},{"w":4,"time":"15:00","t12":"3:00p","div":"9U","home":"BUCK 9U","away":"SMYR 9U","host":"BUCK"},{"w":4,"time":"17:00","t12":"5:00p","div":"10U","home":"BUCK 10U","away":"MARI 10U","host":"BUCK"},{"w":4,"time":"10:30","t12":"10:30a","div":"5U","home":"LITH 5U","away":"DTC 5U","host":"LITH"},{"w":4,"time":"12:00","t12":"12:00p","div":"6U","home":"LITH 6U","away":"SWC 6U","host":"LITH"},{"w":4,"time":"13:30","t12":"1:30p","div":"9U","home":"LITH 9U","away":"FORCE 9U","host":"LITH"},{"w":4,"time":"15:30","t12":"3:30p","div":"10U","home":"LITH 10U","away":"DTC 10U Blue","host":"LITH"},{"w":4,"time":"09:00","t12":"9:00a","div":"6U","home":"SAND 6U","away":"MARI 6U","host":"SAND"},{"w":4,"time":"10:30","t12":"10:30a","div":"7U","home":"SAND 7U","away":"SWC 7U","host":"SAND"},{"w":4,"time":"12:30","t12":"12:30p","div":"8U","home":"SAND 8U","away":"SWC 8U","host":"SAND"},{"w":4,"time":"14:30","t12":"2:30p","div":"9U","home":"SAND 9U Blue","away":"MARI 9U","host":"SAND"},{"w":4,"time":"16:30","t12":"4:30p","div":"9U","home":"SAND 9U Silver","away":"WALL 9U","host":"SAND"},{"w":4,"time":"18:30","t12":"6:30p","div":"10U","home":"SAND 10U","away":"FORCE 10U","host":"SAND"},{"w":5,"time":"09:00","t12":"9:00a","div":"5U","home":"DTC 5U","away":"TUCK 5U","host":"DTC"},{"w":5,"time":"10:30","t12":"10:30a","div":"8U","home":"DTC 8U","away":"WALL 8U","host":"DTC"},{"w":5,"time":"12:30","t12":"12:30p","div":"9U","home":"DTC 9U","away":"WALL 9U","host":"DTC"},{"w":5,"time":"14:30","t12":"2:30p","div":"10U","home":"DTC 10U Gold","away":"WALL 10U","host":"DTC"},{"w":5,"time":"10:00","t12":"10:00a","div":"9U","home":"FORCE 9U","away":"ESR 9U","host":"FORCE"},{"w":5,"time":"12:00","t12":"12:00p","div":"10U","home":"FORCE 10U","away":"ESR 10U","host":"FORCE"},{"w":5,"time":"09:00","t12":"9:00a","div":"6U","home":"MARI 6U","away":"DTC 6U","host":"MARI"},{"w":5,"time":"10:30","t12":"10:30a","div":"9U","home":"MARI 9U","away":"MDA 9U","host":"MARI"},{"w":5,"time":"12:30","t12":"12:30p","div":"10U","home":"MARI 10U","away":"TUCK 10U","host":"MARI"},{"w":5,"time":"09:00","t12":"9:00a","div":"6U","home":"SAND 6U","away":"SWC 6U","host":"SAND"},{"w":5,"time":"10:30","t12":"10:30a","div":"7U","home":"SAND 7U","away":"BUCK 7U","host":"SAND"},{"w":5,"time":"12:30","t12":"12:30p","div":"8U","home":"SAND 8U","away":"TUCK 8U","host":"SAND"},{"w":5,"time":"14:30","t12":"2:30p","div":"9U","home":"SAND 9U Blue","away":"TUCK 9U","host":"SAND"},{"w":5,"time":"16:30","t12":"4:30p","div":"9U","home":"SAND 9U Silver","away":"BUCK 9U","host":"SAND"},{"w":5,"time":"18:30","t12":"6:30p","div":"10U","home":"SAND 10U","away":"BUCK 10U","host":"SAND"},{"w":5,"time":"09:00","t12":"9:00a","div":"5U","home":"SMYR 5U","away":"WALL 5U","host":"SMYR"},{"w":5,"time":"10:30","t12":"10:30a","div":"6U","home":"SMYR 6U","away":"LITH 6U","host":"SMYR"},{"w":5,"time":"12:00","t12":"12:00p","div":"7U","home":"SMYR 7U","away":"DTC 7U","host":"SMYR"},{"w":5,"time":"14:00","t12":"2:00p","div":"8U","home":"SMYR 8U","away":"MDA 8U","host":"SMYR"},{"w":5,"time":"16:00","t12":"4:00p","div":"9U","home":"SMYR 9U","away":"LITH 9U","host":"SMYR"},{"w":5,"time":"18:00","t12":"6:00p","div":"10U","home":"SMYR 10U","away":"DTC 10U Blue","host":"SMYR"},{"w":5,"time":"09:00","t12":"9:00a","div":"5U","home":"SWC 5U","away":"LITH 5U","host":"SWC"},{"w":5,"time":"10:30","t12":"10:30a","div":"7U","home":"SWC 7U","away":"ESR 7U","host":"SWC"},{"w":5,"time":"12:30","t12":"12:30p","div":"8U","home":"SWC 8U","away":"ESR 8U","host":"SWC"},{"w":6,"time":"09:00","t12":"9:00a","div":"6U","home":"ESR 6U","away":"SAND 6U","host":"ESR"},{"w":6,"time":"10:30","t12":"10:30a","div":"7U","home":"ESR 7U","away":"SAND 7U","host":"ESR"},{"w":6,"time":"12:30","t12":"12:30p","div":"8U","home":"ESR 8U","away":"MDA 8U","host":"ESR"},{"w":6,"time":"14:30","t12":"2:30p","div":"9U","home":"ESR 9U","away":"SMYR 9U","host":"ESR"},{"w":6,"time":"16:30","t12":"4:30p","div":"10U","home":"ESR 10U","away":"SMYR 10U","host":"ESR"},{"w":6,"time":"08:00","t12":"8:00a","div":"5U","home":"BUCK 5U","away":"SMYR 5U","host":"BUCK"},{"w":6,"time":"09:30","t12":"9:30a","div":"6U","home":"BUCK 6U","away":"SMYR 6U","host":"BUCK"},{"w":6,"time":"11:00","t12":"11:00a","div":"7U","home":"BUCK 7U","away":"SMYR 7U","host":"BUCK"},{"w":6,"time":"13:00","t12":"1:00p","div":"8U","home":"BUCK 8U","away":"SMYR 8U","host":"BUCK"},{"w":6,"time":"15:00","t12":"3:00p","div":"9U","home":"BUCK 9U","away":"MDA 9U","host":"BUCK"},{"w":6,"time":"17:00","t12":"5:00p","div":"10U","home":"BUCK 10U","away":"DTC 10U Gold","host":"BUCK"},{"w":6,"time":"09:00","t12":"9:00a","div":"6U","home":"MARI 6U","away":"LITH 6U","host":"MARI"},{"w":6,"time":"10:30","t12":"10:30a","div":"9U","home":"MARI 9U","away":"FORCE 9U","host":"MARI"},{"w":6,"time":"12:30","t12":"12:30p","div":"10U","home":"MARI 10U","away":"LITH 10U","host":"MARI"},{"w":6,"time":"09:00","t12":"9:00a","div":"5U","home":"SWC 5U","away":"DTC 5U","host":"SWC"},{"w":6,"time":"10:30","t12":"10:30a","div":"6U","home":"SWC 6U","away":"DTC 6U","host":"SWC"},{"w":6,"time":"12:00","t12":"12:00p","div":"7U","home":"SWC 7U","away":"DTC 7U","host":"SWC"},{"w":6,"time":"14:00","t12":"2:00p","div":"8U","home":"SWC 8U","away":"DTC 8U","host":"SWC"},{"w":6,"time":"10:00","t12":"10:00a","div":"5U","home":"TUCK 5U","away":"WALL 5U","host":"TUCK"},{"w":6,"time":"11:30","t12":"11:30a","div":"8U","home":"TUCK 8U","away":"WALL 8U","host":"TUCK"},{"w":6,"time":"13:30","t12":"1:30p","div":"9U","home":"TUCK 9U","away":"SAND 9U Silver","host":"TUCK"},{"w":6,"time":"15:30","t12":"3:30p","div":"10U","home":"TUCK 10U","away":"SAND 10U","host":"TUCK"},{"w":7,"time":"09:00","t12":"9:00a","div":"5U","home":"DTC 5U","away":"LITH 5U","host":"DTC"},{"w":7,"time":"10:30","t12":"10:30a","div":"6U","home":"DTC 6U","away":"ESR 6U","host":"DTC"},{"w":7,"time":"12:00","t12":"12:00p","div":"9U","home":"DTC 9U","away":"ESR 9U","host":"DTC"},{"w":7,"time":"14:00","t12":"2:00p","div":"10U","home":"DTC 10U Blue","away":"WALL 10U","host":"DTC"},{"w":7,"time":"08:00","t12":"8:00a","div":"5U","home":"BUCK 5U","away":"SWC 5U","host":"BUCK"},{"w":7,"time":"09:30","t12":"9:30a","div":"6U","home":"BUCK 6U","away":"SWC 6U","host":"BUCK"},{"w":7,"time":"11:00","t12":"11:00a","div":"7U","home":"BUCK 7U","away":"SWC 7U","host":"BUCK"},{"w":7,"time":"13:00","t12":"1:00p","div":"8U","home":"BUCK 8U","away":"SWC 8U","host":"BUCK"},{"w":7,"time":"15:00","t12":"3:00p","div":"9U","home":"BUCK 9U","away":"WALL 9U","host":"BUCK"},{"w":7,"time":"17:00","t12":"5:00p","div":"10U","home":"BUCK 10U","away":"FORCE 10U","host":"BUCK"},{"w":7,"time":"09:00","t12":"9:00a","div":"6U","home":"SAND 6U","away":"LITH 6U","host":"SAND"},{"w":7,"time":"10:30","t12":"10:30a","div":"7U","home":"SAND 7U","away":"DTC 7U","host":"SAND"},{"w":7,"time":"12:30","t12":"12:30p","div":"8U","home":"SAND 8U","away":"MDA 8U","host":"SAND"},{"w":7,"time":"14:30","t12":"2:30p","div":"9U","home":"SAND 9U Blue","away":"MDA 9U","host":"SAND"},{"w":7,"time":"16:30","t12":"4:30p","div":"9U","home":"SAND 9U Silver","away":"FORCE 9U","host":"SAND"},{"w":7,"time":"18:30","t12":"6:30p","div":"10U","home":"SAND 10U","away":"DTC 10U Gold","host":"SAND"},{"w":7,"time":"09:00","t12":"9:00a","div":"6U","home":"SMYR 6U","away":"MARI 6U","host":"SMYR"},{"w":7,"time":"10:30","t12":"10:30a","div":"8U","home":"SMYR 8U","away":"DTC 8U","host":"SMYR"},{"w":7,"time":"12:30","t12":"12:30p","div":"9U","home":"SMYR 9U","away":"MARI 9U","host":"SMYR"},{"w":7,"time":"14:30","t12":"2:30p","div":"10U","home":"SMYR 10U","away":"MARI 10U","host":"SMYR"},{"w":7,"time":"10:00","t12":"10:00a","div":"5U","home":"TUCK 5U","away":"SMYR 5U","host":"TUCK"},{"w":7,"time":"11:30","t12":"11:30a","div":"8U","home":"TUCK 8U","away":"ESR 8U","host":"TUCK"},{"w":7,"time":"13:30","t12":"1:30p","div":"9U","home":"TUCK 9U","away":"LITH 9U","host":"TUCK"},{"w":7,"time":"15:30","t12":"3:30p","div":"10U","home":"TUCK 10U","away":"LITH 10U","host":"TUCK"},{"w":8,"time":"08:00","t12":"8:00a","div":"5U","home":"DTC 5U","away":"SMYR 5U","host":"DTC"},{"w":8,"time":"09:30","t12":"9:30a","div":"6U","home":"DTC 6U","away":"MARI 6U","host":"DTC"},{"w":8,"time":"11:00","t12":"11:00a","div":"7U","home":"DTC 7U","away":"BUCK 7U","host":"DTC"},{"w":8,"time":"13:00","t12":"1:00p","div":"8U","home":"DTC 8U","away":"BUCK 8U","host":"DTC"},{"w":8,"time":"15:00","t12":"3:00p","div":"9U","home":"DTC 9U","away":"MDA 9U","host":"DTC"},{"w":8,"time":"17:00","t12":"5:00p","div":"10U","home":"DTC 10U Blue","away":"BUCK 10U","host":"DTC"},{"w":8,"time":"19:00","t12":"7:00p","div":"10U","home":"DTC 10U Gold","away":"FORCE 10U","host":"DTC"},{"w":8,"time":"09:00","t12":"9:00a","div":"6U","home":"LITH 6U","away":"BUCK 6U","host":"LITH"},{"w":8,"time":"10:30","t12":"10:30a","div":"7U","home":"SMYR 7U","away":"ESR 7U","host":"LITH","nu":1},{"w":8,"time":"12:30","t12":"12:30p","div":"9U","home":"LITH 9U","away":"ESR 9U","host":"LITH"},{"w":8,"time":"14:30","t12":"2:30p","div":"10U","home":"LITH 10U","away":"ESR 10U","host":"LITH"},{"w":8,"time":"09:00","t12":"9:00a","div":"6U","home":"SWC 6U","away":"ESR 6U","host":"SWC"},{"w":8,"time":"10:30","t12":"10:30a","div":"7U","home":"SWC 7U","away":"SAND 7U","host":"SWC"},{"w":8,"time":"12:30","t12":"12:30p","div":"8U","home":"SWC 8U","away":"MDA 8U","host":"SWC"},{"w":8,"time":"10:00","t12":"10:00a","div":"5U","home":"TUCK 5U","away":"LITH 5U","host":"TUCK"},{"w":8,"time":"11:30","t12":"11:30a","div":"8U","home":"TUCK 8U","away":"SMYR 8U","host":"TUCK"},{"w":8,"time":"13:30","t12":"1:30p","div":"9U","home":"TUCK 9U","away":"SMYR 9U","host":"TUCK"},{"w":8,"time":"15:30","t12":"3:30p","div":"10U","home":"TUCK 10U","away":"SMYR 10U","host":"TUCK"},{"w":8,"time":"10:00","t12":"10:00a","div":"5U","home":"WALL 5U","away":"SWC 5U","host":"WALL"},{"w":8,"time":"11:30","t12":"11:30a","div":"8U","home":"WALL 8U","away":"SAND 8U","host":"WALL"},{"w":8,"time":"13:30","t12":"1:30p","div":"9U","home":"WALL 9U","away":"SAND 9U Blue","host":"WALL"},{"w":8,"time":"15:30","t12":"3:30p","div":"10U","home":"WALL 10U","away":"SAND 10U","host":"WALL"},{"w":0,"time":"18:30","t12":"6:30p","div":"11U","home":"DTC 11U","away":"BUCK 11U","host":"DTC","x":1},{"w":0,"time":"14:00","t12":"2:00p","div":"11U","home":"FORCE 11U","away":"TUCK 11U","host":"FORCE","x":1},{"w":0,"time":"","t12":"","div":"12U","home":"Gresham Park","away":"DTC 12U","host":null,"x":1,"sm":1},{"w":0,"time":"","t12":"","div":"12U","home":"North Henry","away":"TUCK 12U","host":null,"x":1,"sm":1},{"w":0,"time":"18:30","t12":"6:30p","div":"12U","home":"ESR 12U","away":"Stockbridge","host":"ESR","x":1,"sm":1},{"w":0,"time":"","t12":"","div":"12U","home":"Ellenwood","away":"MARI 12U","host":null,"x":1,"sm":1},{"w":1,"time":"17:00","t12":"5:00p","div":"11U","home":"DTC 11U","away":"TUCK 11U","host":"DTC","x":1},{"w":1,"time":"19:00","t12":"7:00p","div":"11U","home":"BUCK 11U","away":"GA Elite","host":"BUCK","x":1,"sm":1},{"w":1,"time":"","t12":"","div":"11U","home":"Ellenwood","away":"FORCE 11U","host":null,"x":1,"sm":1},{"w":1,"time":"","t12":"","div":"12U","home":"Ellenwood","away":"DTC 12U","host":null,"x":1,"sm":1},{"w":1,"time":"","t12":"","div":"12U","home":"North Henry","away":"ESR 12U","host":null,"x":1,"sm":1},{"w":1,"time":"","t12":"","div":"12U","home":"Stockbridge","away":"MARI 12U","host":null,"x":1,"sm":1},{"w":2,"time":"14:00","t12":"2:00p","div":"11U","home":"DTC 11U","away":"FORCE 11U","host":"DTC","x":1},{"w":2,"time":"16:00","t12":"4:00p","div":"11U","home":"TUCK 11U","away":"BUCK 11U","host":"TUCK","x":1},{"w":2,"time":"18:30","t12":"6:30p","div":"12U","home":"ESR 12U","away":"TUCK 12U","host":"ESR","x":1},{"w":2,"time":"14:30","t12":"2:30p","div":"12U","home":"MARI 12U","away":"North Henry","host":"MARI","x":1,"sm":1},{"w":3,"time":"15:30","t12":"3:30p","div":"11U","home":"TUCK 11U","away":"DTC 11U","host":"TUCK","x":1},{"w":3,"time":"14:00","t12":"2:00p","div":"11U","home":"FORCE 11U","away":"BUCK 11U","host":"FORCE","x":1},{"w":3,"time":"16:30","t12":"4:30p","div":"12U","home":"DTC 12U","away":"North Henry","host":"DTC","x":1,"sm":1},{"w":3,"time":"17:30","t12":"5:30p","div":"12U","home":"TUCK 12U","away":"Ellenwood","host":"TUCK","x":1,"sm":1},{"w":3,"time":"14:30","t12":"2:30p","div":"12U","home":"MARI 12U","away":"Gresham Park","host":"MARI","x":1,"sm":1},{"w":4,"time":"19:00","t12":"7:00p","div":"11U","home":"BUCK 11U","away":"TUCK 11U","host":"BUCK","x":1},{"w":4,"time":"","t12":"","div":"11U","home":"Gresham Park","away":"DTC 11U","host":null,"x":1,"sm":1},{"w":4,"time":"","t12":"","div":"11U","home":"NH Orange","away":"FORCE 11U","host":null,"x":1,"sm":1},{"w":4,"time":"15:00","t12":"3:00p","div":"12U","home":"DTC 12U","away":"Stockbridge","host":"DTC","x":1,"sm":1},{"w":4,"time":"","t12":"","div":"12U","home":"Gresham Park","away":"ESR 12U","host":null,"x":1,"sm":1},{"w":5,"time":"14:00","t12":"2:00p","div":"11U","home":"FORCE 11U","away":"DTC 11U","host":"FORCE","x":1},{"w":5,"time":"16:30","t12":"4:30p","div":"12U","home":"DTC 12U","away":"TUCK 12U","host":"DTC","x":1},{"w":5,"time":"14:30","t12":"2:30p","div":"12U","home":"MARI 12U","away":"ESR 12U","host":"MARI","x":1},{"w":6,"time":"19:00","t12":"7:00p","div":"11U","home":"BUCK 11U","away":"DTC 11U","host":"BUCK","x":1},{"w":6,"time":"17:30","t12":"5:30p","div":"11U","home":"TUCK 11U","away":"FORCE 11U","host":"TUCK","x":1},{"w":6,"time":"19:30","t12":"7:30p","div":"12U","home":"TUCK 12U","away":"Stockbridge","host":"TUCK","x":1,"sm":1},{"w":6,"time":"18:30","t12":"6:30p","div":"12U","home":"ESR 12U","away":"Ellenwood","host":"ESR","x":1,"sm":1},{"w":6,"time":"14:30","t12":"2:30p","div":"12U","home":"MARI 12U","away":"DTC 12U","host":"MARI","x":1},{"w":7,"time":"16:00","t12":"4:00p","div":"11U","home":"DTC 11U","away":"LG","host":"DTC","x":1,"sm":1},{"w":7,"time":"19:00","t12":"7:00p","div":"11U","home":"BUCK 11U","away":"FORCE 11U","host":"BUCK","x":1},{"w":7,"time":"17:30","t12":"5:30p","div":"11U","home":"TUCK 11U","away":"Forest Park","host":"TUCK","x":1,"sm":1},{"w":7,"time":"19:30","t12":"7:30p","div":"12U","home":"TUCK 12U","away":"MARI 12U","host":"TUCK","x":1},{"w":8,"time":"17:30","t12":"5:30p","div":"11U","home":"TUCK 11U","away":"Rockdale","host":"TUCK","x":1,"sm":1},{"w":8,"time":"","t12":"","div":"11U","home":"Stockbridge","away":"BUCK 11U","host":null,"x":1,"sm":1},{"w":8,"time":"21:00","t12":"9:00p","div":"12U","home":"DTC 12U","away":"ESR 12U","host":"DTC","x":1},{"w":8,"time":"","t12":"","div":"12U","home":"Gresham Park","away":"TUCK 12U","host":null,"x":1,"sm":1},{"w":0,"time":"","t12":"","div":"5U","x":1,"sm":1,"home":"GA Elite","away":"SMYR 5U","host":null},{"w":0,"time":"","t12":"","div":"5U","x":1,"sm":1,"home":"Ellenwood","away":"TUCK 5U","host":null},{"w":3,"time":"09:00","t12":"9:00a","div":"5U","x":1,"sm":1,"home":"DTC 5U","away":"Ellenwood","host":"DTC"},{"w":3,"time":"","t12":"","div":"5U","x":1,"sm":1,"home":"North Henry","away":"LITH 5U","host":null},{"w":4,"time":"","t12":"","div":"5U","x":1,"sm":1,"home":"GA Elite","away":"SWC 5U","host":null},{"w":4,"time":"09:00","t12":"9:00a","div":"5U","x":1,"sm":1,"home":"TUCK 5U","away":"Spalding","host":"LITH","nu":1},{"w":7,"time":"","t12":"","div":"5U","x":1,"sm":1,"home":"Spalding","away":"WALL 5U","host":null},{"w":8,"time":"","t12":"","div":"5U","x":1,"sm":1,"home":"North Henry","away":"BUCK 5U","host":null}],"byes":[[0,"DTC 5U"],[0,"BUCK 10U"],[0,"SMYR 9U"],[0,"SAND 7U"],[0,"SWC 7U"],[0,"MDA 8U"],[0,"MDA 9U"],[1,"DTC 6U"],[1,"DTC 10U Gold"],[1,"TUCK 8U"],[1,"TUCK 9U"],[1,"ESR 9U"],[1,"MARI 6U"],[1,"SWC 5U"],[2,"DTC 7U"],[2,"DTC 8U"],[2,"BUCK 7U"],[2,"TUCK 5U"],[2,"SAND 10U"],[3,"TUCK 10U"],[3,"LITH 6U"],[3,"WALL 5U"],[3,"SWC 6U"],[3,"SWC 8U"],[4,"SMYR 5U"],[4,"SMYR 8U"],[4,"SMYR 10U"],[5,"BUCK 5U"],[5,"BUCK 6U"],[5,"BUCK 8U"],[5,"ESR 6U"],[5,"LITH 10U"],[6,"DTC 9U"],[6,"DTC 10U Blue"],[6,"SAND 8U"],[6,"SAND 9U Blue"],[6,"LITH 5U"],[6,"LITH 9U"],[6,"WALL 9U"],[6,"WALL 10U"],[6,"FORCE 10U"],[7,"SMYR 7U"],[7,"ESR 7U"],[7,"ESR 10U"],[7,"WALL 8U"],[8,"BUCK 9U"],[8,"SMYR 6U"],[8,"ESR 8U"],[8,"SAND 6U"],[8,"SAND 9U Silver"],[8,"MARI 9U"],[8,"MARI 10U"],[8,"FORCE 9U"],[1,"TUCK 12U"],[2,"DTC 12U"],[3,"ESR 12U"],[4,"TUCK 12U"],[4,"MARI 12U"],[5,"BUCK 11U"],[5,"TUCK 11U"],[7,"DTC 12U"],[7,"ESR 12U"],[8,"DTC 11U"],[8,"FORCE 11U"],[8,"MARI 12U"]],"longDays":{"1|BUCK":"(long day: first 8:00a, last 7:00p)","4|BUCK":"(long day: first 8:00a, last 7:00p)","6|BUCK":"(long day: first 8:00a, last 7:00p)","6|TUCK":"(long day: first 10:00a, last 7:30p)","7|BUCK":"(long day: first 8:00a, last 7:00p)","7|TUCK":"(long day: first 10:00a, last 7:30p)","8|DTC":"(long day: first 8:00a, last 9:00p)"},"metrics":{"caravan":72,"miles":6960.7,"parks":[5,6],"smallest":2,"gap":"","homecomings":{"BUCK":["2026-10-03","2026-10-17","2026-10-24"],"DTC":["2026-10-31"],"ESR":["2026-10-03","2026-10-17"],"FORCE":["2026-10-10"],"LITH":["2026-10-03"],"MARI":["2026-10-10","2026-10-17"],"SAND":["2026-10-03","2026-10-10","2026-10-24"],"SMYR":["2026-10-10"],"SWC":["2026-10-17"],"TUCK":["2026-10-17","2026-10-24","2026-10-31"],"WALL":["2026-10-31"]}}}],"minHome":4,"exceptions":{},"vs":{"title":"Compared with the 2025 season","provenance":"The 2025 numbers were read off the league's own weekly scoreboard posts, all nine Saturdays and 262 games. The comparison is not like for like: 2025 included 11U and 12U, which are scheduled with another league in 2026, and the org mix changed. It compares how well each schedule was put together, not how the teams did.","rows":[["The league","14 orgs, 68 teams, 262 games (all ages)","12 orgs, 53 league teams and 208 league games, plus eight 11U/12U teams whose crossover season against GMYFL is on this page too, and the eight GMYFL games 5U plays"],["Parks open on a Saturday","Between 5 and 8, averaging 6.6","Between 5 and 6, averaging 5.6"],["How busy each park was","Anywhere from 1 to 8 games. Eight times a park was opened for only one or two games, and 42% of park days had three games or fewer.","Three to seven league games everywhere but Georgia Force, whose two-game days its own lower floor allows because its 11U plays at that park under the other league's schedule."],["Home games per team","Between 1 and 6. Seventeen teams fell outside the 4 or 5 the bylaws ask for, and four teams got a single home game all season.","4 or 5 for 45 of the 53 teams. Four 5U teams host 3, because GMYFL sent six of its eight games to its own fields and only two to ours, which leaves the division two home dates short of four apiece. Two Douglasville teams host 6 and 7 because its park must open with a full slate on all eight of its crossover and homecoming Saturdays, and MDA hosts none by its own arrangement under bylaw 7a."],["Saturdays off","Between 0 and 8. Sixteen teams sat out two or more Saturdays, and some sat out a month in a row. Only 31 of the 68 teams played every Saturday.","Every league team sits out exactly once, and nobody ever sits out two Saturdays in a row. Only the 12U crossover format gives its four teams two byes each."],["Games played","Between 1 and 9. Thirteen teams got six games or fewer for the same registration fee as everyone else.","All 53 teams play exactly 8. Every age group is exactly level, 5U included: its league half is sized to fill whatever GMYFL's eight games leave open, so the team that got none of them plays eight league games instead."],["Homecomings","Not guaranteed. Four of the fourteen orgs never got one.","Every org large enough to hold one gets an October homecoming, and every org that asked for a particular Saturday was given it."],["Orgs playing themselves","Happened three times, in weeks 6 to 8.","Cannot happen. Two teams from the same org are never scheduled against each other."],["Latest kickoff","9:00 PM, twice. Those days ran thirteen hours at the park.","7:00 PM for league play, once, on the closing Saturday, and no park's league slate exceeds seven games. Seven other 10U games kick at 6:00 or 6:30 PM at Sandtown and Smyrna, a consequence of the 9:00 opens the orgs asked for; the parks that run seven games or more open at 8:00 and are unaffected. The closing homecoming ends with a 9:00 PM 12U crossover game, an eighth game approved as a special."],["Families with two players","On 23 Saturdays an org's travelling teams were sent to three or more parks at once, and to four parks on eight of those. Counting its own park on days it was also hosting, one org was spread across five places in a single day.","When an org's league teams travel they go to at most three parks between them, counted as real car parks rather than opponent names, and to two or fewer on 63 of the 69 Saturdays an org travels at all. On 19 of those they all go to the same one. The six three-park Saturdays are the price of building 5U around the dates GMYFL fixed; every other Saturday holds the two-park rule. Crossover trips to the GMYFL parks sit outside this rule."],["Long drives","Nothing in the schedule limited them.","A long drive means 60 miles or more. No league team from the ten nearby orgs takes more than one all season. Only the two outlying parks go further: Georgia Force in Athens and MDA in Rome, which hosts nothing and travels to every game, at up to four apiece."],["Checking the work","A photo of the scoreboard each week, with nothing to show whether the season had been fair.","Thirteen fairness rules are checked by the software against the finished schedule. Wherever it falls short, it is printed at the bottom of this page rather than left for someone to find."]],"notes_2025_better":["2025 gave most teams nine games. Here the member hosting restrictions mean several divisions rest a pair of teams on some Saturdays, so every league team plays eight."],"notes_structural":["Five orgs told the league they can open their parks on four named Saturdays only, and MDA hosts no games at all. That is the single biggest shaper of this schedule: it decides which parks are open on any given weekend, and everything else is fitted around it.","GMYFL's eight 5U games are spread unevenly: Douglasville and Tucker two each, Buckeyes, Lithonia, Southwest and Wallace Park one each, Smyrna none. The league half absorbs the difference, so 5U plays 24 games among its seven teams and three pairs meet twice.","10U's eleven teams cannot pair up, so at least one sits every Saturday. They are held level anyway: every team takes exactly one bye and plays eight, which needs one Saturday resting three of them instead of one.","Two games are played at a park that is neither team's ground, both at Lithonia: a 7U game on Oct 31, when six of the eleven parks are closed and the rest cannot hold every game, and Tucker's GMYFL game against Spalding on Oct 3, which Tucker's own park would have to open for a single game.","In the small divisions every team plays every other at least once before anyone plays anyone twice, and no rematch comes sooner than three weeks after the first meeting. 6U and 7U play more games than they have opponents, so rematches are unavoidable there. 5U carries three as well, because eight games from GMYFL leave 24 for the league to fill and seven teams only make 21 distinct pairings.","MDA travels furthest by a wide margin: it hosts nothing under bylaw 7a, so both its teams play all eight games on the road.","Six Saturdays send one org's travelling teams to three different parks instead of two. GMYFL sets the dates of its eight 5U games, and on those Saturdays the two-park rule cannot be held."]},"info":{"faq_title":"Questions this schedule gets asked","faq":[{"q":"How many games does each team play?","a":"Eight, with one bye, for every team in 5U through 10U, and for 11U's crossover season. 12U's crossover format is seven games with two byes. No team plays more than one game fewer than anyone else in its age group, and no team sits out two Saturdays in a row."},{"q":"How do the byes work?","a":"6U, 7U and 9U rest teams in pairs on some Saturdays, one bye per team across the season. 8U and 10U have an odd number of teams (nine and eleven), so at least one team sits every Saturday, and every team takes exactly one bye; in 10U, eleven byes across nine Saturdays means one Saturday rests three teams. 5U's seven teams play 24 games among themselves plus the eight GMYFL sent, which fills the calendar exactly: eight games and a single bye each. In the crossover season each 11U team takes one bye and each 12U team takes two, set by which Saturdays the GMYFL teams offered games."},{"q":"Who do the 5U teams play outside the league?","a":"GMYFL, eight games on five Saturdays it named. Tucker plays two, and Douglasville, the Buckeyes, Lithonia, Smyrna, Southwest and Wallace Park one each. The league half is built around those dates, so every 5U team still finishes on eight games and one bye. Six of the eight are at GMYFL fields and two at ours, which is why four 5U teams host three times rather than four."},{"q":"Why can five orgs host only on certain Saturdays?","a":"The Buckeyes, East Side, Georgia Force, Sandtown and Smyrna told the league their fields are available on named Saturdays only. Those dates decide which parks are open on any weekend, and everything else in this schedule is fitted around them. Wallace Park is also closed on Oct 17."},{"q":"What about 11U and 12U?","a":"They are on this page. Our four 11U and four 12U teams play a crossover season: games among themselves plus games against GMYFL's teams (Ellenwood, Gresham Park, North Henry, Stockbridge and their neighbors). Games at GMYFL parks appear as away games without kickoff times, since those parks run their own slates; games at our parks take the next kickoff slot after the day's league games."},{"q":"Why does MDA never host?","a":"Its own arrangement with the league under bylaw 7a. Both its teams play every game on the road, which is also why they carry the league's longest drives."},{"q":"Why are two games at a park that is neither team's ground?","a":"Both go to Lithonia, for different reasons. On Oct 31 six of the eleven parks are closed and the ones still open cannot hold every game, so a 7U game moves there; Lithonia fields no 7U team of its own and has field time to spare. On Oct 3 Tucker's GMYFL game against Spalding goes there because Tucker's own park has nothing else that Saturday and would be opening for a single game, while Lithonia is open and sits between the two. Both still count as the home team's home game."},{"q":"How were homecomings decided?","a":"League rule: homecomings happen in October. Every org with at least three teams gets a Saturday with all of its 5U-10U teams at home inside that window, and every org that requested a specific date received exactly that date. Where the crossover calendar allows, the org's 11U and 12U are home that day too; where it does not, that team travels or rests."},{"q":"What keeps the driving down?","a":"Two rules, both on the league schedule. A long drive is 60 miles or more, and no league team from the ten nearby orgs takes more than three all season; Georgia Force and MDA, the two outlying parks, carry higher allowances because no schedule can do better from Athens or Rome. Separately, an org's travelling league teams go to at most three different parks on the same Saturday, and to two or fewer on all but eight occasions all season, so a family with players on two teams is almost never split three ways. Four of those eight fall on Saturdays GMYFL fixed for its 5U games, which the rest of the schedule has to bend around; the other four are ordinary league Saturdays. Crossover trips to the GMYFL parks sit outside both rules; they go where that league's calendar puts them."},{"q":"How are kickoff times set?","a":"The 2025 spacing rule, kept exactly: a park opens with its youngest age group, then leaves 90 minutes after a 5U or 6U game and two hours after anything older. Every park opens at 9:00 AM, except Georgia Force, Tucker and Wallace Park, which asked for 10:00. Douglasville and East Side asked for the 9:00 themselves; the rest of the league follows it as the default rather than sitting an hour ahead of everyone. Only the first kickoff moves, never the spacing, which is why Georgia Force's 10:00, 12:00 and 2:00 and Wallace Park's 5U 10:00, 8U 11:30, 9U 1:30 and 10U 3:30 are just the same rule started later. Every park runs one field, and the order is by age however a game was scheduled: a 5U crossover game opens its park's Saturday exactly like a 5U league game, and an 11U or 12U crossover game takes the next slot after the league slate because it is the oldest thing on the field. A park-day of seven games or more opens at 8:00 AM whatever the park's usual hour, because seven games on one field from a 9:00 open runs to an 8:00 PM kickoff. That covers five Saturdays: Douglasville's eight-game homecoming and the Buckeyes' four seven-game days, all of which now close at 7:00 PM rather than 8:00. The league slate's latest kickoff is 7:00 PM, once all season, and the longest day ends with the 9:00 PM 12U crossover game. Seven other league games sit between 6:00 and 6:30 PM, at Sandtown and Smyrna, whose six-game days are just under the early-open threshold. Any park that would rather open earlier only has to say so."}],"age_notes":{"5U":"7 teams playing 24 games, so every pair meets once and three meet twice. GMYFL adds eight more across five Saturdays: Tucker takes two and the other six one each. Eight games and one bye each; home dates run 3 to 5, because only two of GMYFL's eight are at our parks.","6U":"8 teams, one bye each by rule, level at 8 games. Each team plays its seven opponents once, then fills its eighth game by playing one of them a second time.","7U":"6 teams, one bye each, level at 8 games. Only five opponents, so rematches are unavoidable.","8U":"9 teams, so one sits every Saturday. Nine byes over nine teams is exactly one each, level at 8 games.","9U":"12 teams, one bye each by rule, level at 8 games. The bye also trims the Saturdays that would otherwise need six separate 9U host parks.","10U":"11 teams, so at least one sits every Saturday. One bye each by rule, level at 8 games; one Saturday rests three teams to make the count come out.","11U":"Crossover season: our four teams play each other twice and take two games against GMYFL teams, level at 8 games with one bye.","12U":"Crossover season: our four teams play each other once and each of GMYFL's four teams once, 7 games with two byes."}}};
+let cand=0, mode="org", orgFilter="";
+const S=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+const cseg=S("candseg");
+D.candidates.forEach((c,i)=>{
+  const b=document.createElement("button");
+  b.textContent=String.fromCharCode(65+i); b.title=c.label;
+  b.onclick=()=>{cand=i;render()}; cseg.appendChild(b);
+});
+if(D.candidates.length<2)cseg.style.display="none";
+S("viewseg").querySelectorAll("button").forEach(b=>b.onclick=()=>{mode=b.dataset.v;render()});
+D.orgs.forEach(o=>{
+  const op=document.createElement("option"); op.value=o.key; op.textContent=o.name;
+  S("orgpick").appendChild(op);
+});
+S("orgpick").onchange=e=>{orgFilter=e.target.value;render()};
+if(!D.info&&!D.vs)S("infobtn").style.display="none";
+
+function cellIndex(c){
+  const m={};
+  c.games.forEach(g=>{
+    m[g.w+"|"+g.home]={opp:g.away,h:1,t:g.t12,host:g.host,sm:g.sm,nu:g.nu};
+    m[g.w+"|"+g.away]={opp:g.home,h:0,t:g.t12,host:g.host,sm:g.sm,nu:g.nu};
+  });
+  c.byes.forEach(([w,t])=>{m[w+"|"+t]={bye:1}});
+  return m;
+}
+const wkIndex=iso=>{const[y,mo,da]=iso.split("-");
+  return D.weeks.indexOf(+mo+"/"+ +da);};
+// week indices of each org's October all-home Saturdays, so any org's
+// homecoming stars, not one league member's, and only the real ones
+function hcWeeks(c){
+  const out={};
+  Object.entries(c.metrics.homecomings||{}).forEach(([k,ds])=>{
+    out[k]=new Set(ds.map(wkIndex));
+  });
+  return out;
+}
+// Same grid as the org view, banded by age group instead. A parent follows one
+// age group; a board member follows one org. Both want the season on one page.
+function ageView(c){
+  const idx=cellIndex(c);
+  const hc=hcWeeks(c);
+  const byDiv={};
+  D.orgs.forEach(o=>o.teams.forEach(t=>{
+    const div=t.label.split(" ")[0];
+    (byDiv[div]=byDiv[div]||[]).push({org:o,team:t});
+  }));
+  let h='<div class="scroll"><table><thead><tr><th>Team</th>';
+  D.weeks.forEach((w,i)=>h+='<th>Wk '+(i+1)+'<small>'+w+'</small></th>');
+  h+='<th>GP</th></tr></thead><tbody>';
+  D.divisions.forEach(div=>{
+    const list=(byDiv[div]||[]).filter(x=>!orgFilter||x.org.key===orgFilter);
+    if(!list.length)return;
+    h+='<tr class="orgband"><td colspan="'+(D.weeks.length+2)+'">'+esc(div)+
+       ' <span style="font-weight:400;text-transform:none;letter-spacing:0">('+
+       (byDiv[div]||[]).length+' teams)</span></td></tr>';
+    list.forEach(({org,team})=>{
+      const suffix=team.label.slice(div.length).trim();
+      const name=esc(org.name)+(suffix?" "+esc(suffix):"");
+      const hcw=hc[org.key]||new Set();
+      let played=0,cells="";
+      D.weeks.forEach((_,w)=>{
+        const c2=idx[w+"|"+team.id];
+        if(!c2){cells+='<td></td>';return}
+        if(c2.bye){cells+='<td class="b">bye</td>';return}
+        played++;
+        const opp=c2.opp.replace(/ (5|6|7|8|9|10|11|12)U/," ").replace(/\s+/g," ").trim();
+        const star=(c2.h&&hcw.has(w))?'<span class="hc">&#9733;</span>':"";
+        cells+='<td class="'+(c2.h?"h ":"")+(c2.sm?"xg ":"")+(c2.nu?"nu":"")+'">'+(c2.h?"vs ":"@ ")+esc(opp)+star+
+               '<span class="t">'+c2.t+'</span></td>';
+      });
+      h+='<tr><td class="team">'+name+'</td>'+cells+'<td>'+played+'</td></tr>';
+    });
+  });
+  h+='</tbody></table></div><p class="hint">Every team in an age group, so a '+
+     'parent can follow one division down the page. Shaded cell = home game. '+
+     'Yellow = crossover game against a GMYFL team. '+
+     "Blue = neutral site, played at neither team's park. "+
+     '&#9733; = October homecoming. GP = games played across the season.</p>';
+  return h;
+}
+
+function orgView(c){
+  const idx=cellIndex(c);
+  const hc=hcWeeks(c);
+  let h='<div class="scroll"><table><thead><tr><th>Team</th>';
+  D.weeks.forEach((w,i)=>h+='<th>Wk '+(i+1)+'<small>'+w+'</small></th>');
+  h+='<th>H</th></tr></thead><tbody>';
+  D.orgs.forEach(o=>{
+    if(orgFilter&&o.key!==orgFilter)return;
+    const hcw=hc[o.key]||new Set();
+    h+='<tr class="orgband"><td colspan="11">'+esc(o.name)+'</td></tr>';
+    o.teams.forEach(t=>{
+      let homes=0;
+      h+='<tr><td class="team">'+esc(t.label)+'</td>';
+      D.weeks.forEach((_,w)=>{
+        const c2=idx[w+"|"+t.id];
+        if(!c2){h+='<td></td>';return}
+        if(c2.bye){h+='<td class="b">bye</td>';return}
+        if(c2.h)homes++;
+        const opp=c2.opp.replace(/ (5|6|7|8|9|10|11|12)U/," ").replace(/\s+/g," ").trim();
+        const star=(c2.h&&hcw.has(w))?'<span class="hc">&#9733;</span>':'';
+        h+='<td class="'+(c2.h?"h ":"")+(c2.sm?"xg ":"")+(c2.nu?"nu":"")+'">'+(c2.h?"vs ":"@ ")+esc(opp)+star+
+           '<span class="t">'+c2.t+'</span></td>';
+      });
+      h+='<td>'+homes+'</td></tr>';
+    });
+  });
+  h+='</tbody></table></div><p class="hint">Shaded cell = home game. Yellow = crossover game against a GMYFL team. Blue = neutral site, played at neither team&#39;s park. &#9733; = October homecoming (every 5U-10U team of that org at home, on a Saturday inside the league homecoming window). H column = home-game total. Times are kickoffs at the host park.</p>';
+  return h;
+}
+function weekView(c){
+  const byPark={};
+  c.games.forEach(g=>{(byPark[g.w+"|"+g.host]=byPark[g.w+"|"+g.host]||[]).push(g)});
+  let h='';
+  D.weeks.forEach((wd,w)=>{
+    h+='<section class="wk"><h2>Week '+(w+1)+'<span>Saturday '+wd+'</span></h2><div class="weekgrid">';
+    const hosts=[...new Set(c.games.filter(g=>g.w===w).map(g=>g.host).filter(Boolean))].sort();
+    hosts.forEach(host=>{
+      const gs=byPark[w+"|"+host].slice().sort((a,b)=>a.time<b.time?-1:1);
+      if(orgFilter&&!gs.some(g=>g.home.startsWith(orgFilter+" ")||g.away.startsWith(orgFilter+" "))&&host!==orgFilter)return;
+      const nm=D.orgs.find(o=>o.key===host).name;
+      const ld=(c.longDays||{})[w+"|"+host];
+      h+='<div class="park"><h3>'+esc(nm)+'<em>'+gs.length+' games'+
+         (ld?' '+esc(ld):'')+'</em></h3>';
+      gs.forEach(g=>{
+        const strip=t=>t.replace(" "+g.div,"").trim();
+        h+='<div><span class="dv kt">'+g.t12+'</span><span class="dv">'+g.div+'</span>'+
+           '<b>'+esc(strip(g.home))+'</b> <span class="tm">vs</span> '+esc(strip(g.away))+'</div>';
+      });
+      h+='</div>';
+    });
+    const byes=c.byes.filter(b=>b[0]===w).map(b=>b[1]);
+    h+='</div>'+(byes.length?'<div class="byeline">Byes: '+esc(byes.join(", "))+'</div>':'');
+    h+='</section>';
+  });
+  return h;
+}
+// The stat-sheet tab. Every figure here is recounted from the games and byes
+// in the payload each time it renders, so a re-solve can never leave the tab
+// quoting a schedule that no longer exists; only the prose comes from config.
+function infoView(c){
+  const inf=D.info||{};
+  const gp={},nby={};
+  D.orgs.forEach(o=>o.teams.forEach(t=>{gp[t.id]=0;nby[t.id]=0}));
+  c.games.forEach(g=>{if(g.home in gp)gp[g.home]++;if(g.away in gp)gp[g.away]++});
+  c.byes.forEach(([w,t])=>{if(t in nby)nby[t]++});
+  const byDiv={};
+  D.orgs.forEach(o=>o.teams.forEach(t=>{
+    const dv=t.label.split(" ")[0];(byDiv[dv]=byDiv[dv]||[]).push(t.id)}));
+  const divs=D.divisions.filter(d=>byDiv[d]);
+  const hosts={};
+  c.games.forEach(g=>{if(!g.x)(hosts[g.w]=hosts[g.w]||{})[g.host]=1});
+  const perWeek=Object.values(hosts).map(o=>Object.keys(o).length);
+  const avgParks=(perWeek.reduce((a,b)=>a+b,0)/perWeek.length).toFixed(1);
+  const latest=c.games.reduce((a,g)=>g.time>a.time?g:a,c.games[0]);
+  const nteams=Object.keys(gp).length;
+  const range=v=>{const lo=Math.min(...v),hi=Math.max(...v);
+    return lo===hi?String(lo):lo+"-"+hi};
+  const card=(v,l,s)=>'<div class="cardstat"><b>'+v+'</b><span>'+l+'</span>'+
+    (s?'<small>'+esc(s)+'</small>':'')+'</div>';
+  let h='<div class="vs"><h2>League at a glance</h2><div class="cards">';
+  // x marks any game this tool did not schedule. Two different things wear it
+  // now, so the card has to say which is which rather than adding them up and
+  // calling the total a crossover season.
+  const xg=c.games.filter(g=>g.x).length;
+  const x11=c.games.filter(g=>g.x&&(g.div==="11U"||g.div==="12U")).length;
+  const x5=c.games.filter(g=>g.x&&g.div==="5U").length;
+  const xnote=[x11||x5?(c.games.length-xg)+" league":"",
+               x11?x11+" in the 11U/12U crossover season":"",
+               x5?x5+" GMYFL games in 5U":""].filter(Boolean).join(", ");
+  // Both counts mix the league slate with games this tool does not schedule,
+  // so both say so the same way instead of one naming the crossover season
+  // and the other naming everything but.
+  const xdivs=["11U","12U"];
+  const lgTeams=Object.keys(gp).filter(t=>!xdivs.includes(
+    D.orgs.flatMap(o=>o.teams).find(x=>x.id===t).label.split(" ")[0])).length;
+  const lgGames=c.games.length-xg;
+  const hostOrgs=new Set(c.games.filter(g=>g.host).map(g=>g.host)).size;
+  h+=card(D.orgs.length,"Organizations",hostOrgs+" parks host; MDA hosts none");
+  h+=card(nteams,"Teams",xg?lgTeams+" in the league slate, "+(nteams-lgTeams)+
+          " more in the 11U/12U crossover season":"11U and 12U play elsewhere");
+  h+=card(divs.length,"Age groups","5U through "+divs[divs.length-1]);
+  h+=card(c.games.length,"Games",xnote);
+  h+=card(D.weeks.length,"Saturdays",D.weeks[0]+" to "+D.weeks[D.weeks.length-1]+", Sep 5 off");
+  h+=card(range(perWeek)+" parks","Open per Saturday","averaging "+avgParks);
+  h+=card(c.byes.length,"Byes all season","");
+  h+=card(latest.t12,"Latest kickoff","once, Wk "+(latest.w+1)+" ("+D.weeks[latest.w]+")");
+  h+=card(c.metrics.miles.toLocaleString(),"Total one-way miles","");
+  h+='</div>';
+  h+='<h2>Games and byes by age group</h2>';
+  h+='<div class="scroll"><table><thead><tr><th>Age group</th><th>Teams</th>'+
+     '<th>Games each</th><th>Byes each</th><th>Why</th></tr></thead><tbody>';
+  divs.forEach(d=>{
+    const ids=byDiv[d];
+    h+='<tr><td>'+esc(d)+'</td><td>'+ids.length+'</td>'+
+       '<td>'+range(ids.map(t=>gp[t]))+'</td>'+
+       '<td>'+range(ids.map(t=>nby[t]))+'</td>'+
+       '<td>'+esc((inf.age_notes||{})[d]||"")+'</td></tr>';
+  });
+  h+='</tbody></table></div>';
+  const two=Object.keys(nby).filter(t=>nby[t]>1).sort();
+  const none=Object.keys(nby).filter(t=>!nby[t]&&
+    byDiv[D.orgs.flatMap(o=>o.teams).find(x=>x.id===t).label.split(" ")[0]].length%2).sort();
+  if(two.length||none.length)
+    h+='<p class="hint">'+(two.length?'Two byes: '+esc(two.join(", "))+'. ':'')+
+       (none.length?'No bye: '+esc(none.join(", "))+'.':'')+'</p>';
+  h+='<h2>Teams per organization</h2>';
+  h+='<div class="scroll"><table><thead><tr><th>Organization</th><th>Teams</th>'+
+     '<th>Age groups fielded</th></tr></thead><tbody>';
+  D.orgs.forEach(o=>{
+    h+='<tr><td>'+esc(o.name)+'</td><td>'+o.teams.length+'</td>'+
+       '<td>'+esc(o.teams.map(t=>t.label).join(", "))+'</td></tr>';
+  });
+  h+='</tbody></table></div>';
+  if((inf.faq||[]).length){
+    h+='<h2>'+esc(inf.faq_title||"Questions and answers")+'</h2><dl class="faq">';
+    inf.faq.forEach(f=>{h+='<dt>'+esc(f.q)+'</dt><dd>'+esc(f.a)+'</dd>'});
+    h+='</dl>';
+  }
+  h+='</div>';
+  if(D.vs)h+=vsView();
+  return h;
+}
+function vsView(){
+  const v=D.vs;
+  let h='<div class="vs"><h2>'+esc(v.title)+'</h2><p class="prov">'+esc(v.provenance)+'</p>';
+  h+='<div class="scroll"><table><thead><tr><th></th><th>Last season (2025)</th><th>This proposal (2026)</th></tr></thead><tbody>';
+  v.rows.forEach(r=>{h+='<tr><td>'+esc(r[0])+'</td><td>'+esc(r[1])+'</td><td>'+esc(r[2])+'</td></tr>'});
+  h+='</tbody></table></div>';
+  h+='<h2>Where 2025 did better</h2><ul>'+v.notes_2025_better.map(n=>'<li>'+esc(n)+'</li>').join('')+'</ul>';
+  h+='<h2>Where this schedule falls short</h2><ul>'+v.notes_structural.map(n=>'<li>'+esc(n)+'</li>').join('')+'</ul>';
+  return h+'</div>';
+}
+function render(){
+  const c=D.candidates[cand];
+  cseg.querySelectorAll("button").forEach((b,i)=>b.className=i===cand?"on":"");
+  S("viewseg").querySelectorAll("button").forEach(b=>b.className=b.dataset.v===mode?"on":"");
+  S("candname").textContent=c.label;
+  S("view").innerHTML=mode==="org"?orgView(c):
+    (mode==="age"?ageView(c):(mode==="week"?weekView(c):infoView(c)));
+  const m=c.metrics;
+  const exc=Object.entries(D.exceptions).map(([d,f])=>d+" min "+f).join(", ");
+  const hcs=m.homecomings||{};
+  // alphabetical by org name, the same order the table above uses
+  const hcline=D.orgs.filter(o=>hcs[o.key]&&hcs[o.key].length)
+    .map(o=>o.key+" "+hcs[o.key].map(d=>D.weeks[wkIndex(d)]||d).join(" + "))
+    .join(", ");
+  S("foot").innerHTML="<b>"+esc(c.label)+"</b> &middot; caravan "+m.caravan+
+    " &middot; "+m.miles+" total one-way miles &middot; parks live "+
+    Math.min(...m.parks)+"-"+Math.max(...m.parks)+"/week &middot; smallest park-day "+
+    (m.smallest??"-")+" games"+(m.gap?" &middot; "+esc(m.gap):"")+
+    (hcline?"<br>Homecomings: "+esc(hcline):"")+
+    (exc?"<br>Bylaw note: 4-home minimum not reachable in "+esc(exc)+
+    " (division home slots cannot support 4); all other bylaw checks pass.":"");
+}
+render();
+
+/* The Print button is shown only when this page is NOT in a frame. Served from
+   an ordinary URL it prints the view on screen through the black-and-white
+   stylesheet; inside the artifact viewer window.print() is blocked outright, so
+   there the button would be a lie and never appears. */
+if (window.top === window.self) S("printbtn").hidden = false;
+</script>
