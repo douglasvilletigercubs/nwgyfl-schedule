@@ -27,6 +27,7 @@ header h1{margin:0;font-size:17px;font-weight:600;letter-spacing:.02em}
 .titleblock{display:flex;flex-direction:column;align-items:center}
 .subnote{font-size:10.5px;color:var(--dim);margin-top:1px;letter-spacing:.02em}
 /* the paper key: meaningless on screen, where colour does the work */
+a.printbtn{text-decoration:none;line-height:1.5}
 .printkey{display:none;font-size:10px;color:#333;margin-top:3px;letter-spacing:.01em}
 .printkey .k-x{border-left:3px solid #111;padding-left:4px}
 .printkey .k-n{outline:1.5px dashed #111;outline-offset:1px;padding:0 3px}
@@ -178,6 +179,8 @@ footer b{color:var(--ink)}
     </span>
     <select id="orgpick"><option value="">All orgs</option></select>
     <button class="printbtn" id="printbtn" onclick="print()" hidden>Print</button>
+    <a class="printbtn" id="printlink" hidden target="_blank" rel="noopener"
+       href="https://douglasvilletigercubs.github.io/nwgyfl-schedule/">Printable version</a>
   </div>
 </header>
 <main><div id="view"></div></main>
@@ -443,9 +446,12 @@ function render(){
 }
 render();
 
-/* The Print button is shown only when this page is NOT in a frame. Served from
-   an ordinary URL it prints the view on screen through the black-and-white
-   stylesheet; inside the artifact viewer window.print() is blocked outright, so
-   there the button would be a lie and never appears. */
+/* One build serves two homes, and each gets the affordance that works there.
+   Served from an ordinary URL this page can print itself, so the Print button
+   shows. Inside the artifact viewer window.print() is blocked outright and any
+   download the page starts is inert, so instead it offers the way out: a link
+   to the same page hosted normally, where printing works. Neither ever appears
+   in the wrong place, and the hosted copy never links to itself. */
 if (window.top === window.self) S("printbtn").hidden = false;
+else S("printlink").hidden = false;
 </script>
